@@ -1,3 +1,226 @@
-[gd_scene format=2]
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://misc/tilesets/EnvironmentTileset.tres" type="TileSet" id=1]
+[ext_resource path="res://sprites/tileset.png" type="Texture" id=2]
+[ext_resource path="res://sprites/skull_mask.png" type="Texture" id=3]
+[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/goblin/Goblin.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/game/Game.gd" type="Script" id=6]
+[ext_resource path="res://sprites/staue_eye_progress.png" type="Texture" id=7]
+[ext_resource path="res://sprites/healthbar_back.png" type="Texture" id=8]
+[ext_resource path="res://sprites/healthbar_front.png" type="Texture" id=9]
+[ext_resource path="res://scenes/game/Camera2D.gd" type="Script" id=10]
+
+[sub_resource type="Gradient" id=11]
+offsets = PoolRealArray( 0, 0.445313, 1 )
+colors = PoolColorArray( 0.388235, 0.607843, 1, 1, 0.388235, 0.607843, 1, 1, 0.388235, 0.607843, 1, 0 )
+
+[sub_resource type="GradientTexture" id=12]
+gradient = SubResource( 11 )
+
+[sub_resource type="ParticlesMaterial" id=13]
+emission_shape = 2
+emission_box_extents = Vector3( 2, 2, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 30.0
+gravity = Vector3( 0, -98, 0 )
+initial_velocity = 15.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 12 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 1 ), 0.0, -0.108562, 0, 0, Vector2( 1, 0 ), -1.75862, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+lifetime_randomness = 1.0
+emission_shape = 2
+emission_box_extents = Vector3( 128, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+gravity = Vector3( 0, -98, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 4 )
+color = Color( 0.388235, 0.607843, 1, 1 )
+
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0, 0.0214286, 0.115646 )
+colors = PoolColorArray( 0.388235, 0.607843, 1, 0.607843, 0.266667, 0.415686, 0.678431, 0.380392, 0.133333, 0.12549, 0.203922, 0.0509804 )
+
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 6 )
+
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0.311111, 0.703704, 1 )
+colors = PoolColorArray( 0.972168, 0.955977, 0.524059, 1, 0.647949, 0.499895, 0.14427, 1, 0.272949, 0.0106621, 0.0106621, 1 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="ParticlesMaterial" id=10]
+flag_disable_z = true
+direction = Vector3( -1, -1, 0 )
+spread = 50.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 20.0
+initial_velocity_random = 0.17
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 9 )
 
 [node name="Game" type="Node"]
+script = ExtResource( 6 )
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="SoulTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 128, 128 )
+current = true
+script = ExtResource( 10 )
+
+[node name="Statue" type="Sprite" parent="."]
+position = Vector2( 128, 45 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 64, 96, 32, 32 )
+
+[node name="EyeProgress" type="TextureProgress" parent="Statue"]
+margin_left = -6.0
+margin_top = -5.0
+margin_right = 6.0
+margin_bottom = -2.0
+max_value = 33.0
+allow_greater = true
+allow_lesser = true
+texture_progress = ExtResource( 7 )
+fill_mode = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Eye1" type="Particles2D" parent="Statue"]
+position = Vector2( -4, -3 )
+emitting = false
+amount = 16
+process_material = SubResource( 13 )
+
+[node name="Eye2" type="Particles2D" parent="Statue"]
+position = Vector2( 4, -3 )
+emitting = false
+amount = 16
+process_material = SubResource( 13 )
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UILayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
+margin_left = 10.0
+margin_top = 3.0
+margin_right = 246.0
+margin_bottom = 15.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SoulBar" type="TextureProgress" parent="UILayer/UI/MarginContainer"]
+margin_right = 236.0
+margin_bottom = 12.0
+texture_under = ExtResource( 8 )
+texture_progress = ExtResource( 9 )
+
+[node name="LeftSpawn" type="Position2D" parent="."]
+position = Vector2( -8, 84 )
+__meta__ = {
+"_gizmo_extents_": 8.0
+}
+
+[node name="RightSpawn" type="Position2D" parent="."]
+position = Vector2( 264, 84 )
+__meta__ = {
+"_gizmo_extents_": 8.0
+}
+
+[node name="Fire" type="Particles2D" parent="."]
+position = Vector2( 128, 256 )
+amount = 64
+lifetime = 10.0
+preprocess = 10.0
+process_material = SubResource( 5 )
+
+[node name="WallTileMap" type="TileMap" parent="."]
+z_index = -11
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="Gradient" type="Polygon2D" parent="."]
+position = Vector2( -64, 288 )
+rotation = -1.5708
+scale = Vector2( 1.5, 1.5 )
+z_index = 10
+color = Color( 1, 1, 1, 0.611765 )
+texture = SubResource( 7 )
+polygon = PoolVector2Array( 0, 0, 256, 0, 256, 256, 0, 256 )
+
+[node name="FloorTileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 8 )
+format = 1
+tile_data = PoolIntArray( 851967, 0, 0, 786432, 0, 0, 786433, 0, 0, 786434, 0, 0, 786435, 536870912, 0, 786436, 1, 0, 786443, 536870913, 0, 786444, 536870912, 0, 786445, 536870912, 0, 786446, 536870912, 0, 786447, 536870912, 0, 786448, 0, 0, 1310724, 536870913, 0, 1310725, 536870912, 0, 1310726, 536870912, 0, 1310727, 536870912, 0, 1310728, 0, 0, 1310729, 0, 0, 1310730, 0, 0, 1310731, 1, 0, 1900543, 0, 0, 1835008, 0, 0, 1835009, 0, 0, 1835010, 0, 0, 1835011, 0, 0, 1835012, 0, 0, 1835013, 1, 0, 1835018, 536870913, 0, 1835019, 536870912, 0, 1835020, 536870912, 0, 1835021, 536870912, 0, 1835022, 536870912, 0, 1835023, 536870912, 0, 1835024, 0, 0 )
+
+[node name="DecorTileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 8 )
+format = 1
+tile_data = PoolIntArray( 655362, 7, 0, 655372, 7, 0, 655375, 536870918, 0, 851969, 1610612742, 0, 851971, 4, 0, 851981, 1610612743, 0, 851983, 536870917, 0, 1179655, 536870919, 0, 1179658, 536870918, 0, 1376262, 1610612742, 0, 1376264, 4, 0, 1376265, 5, 0, 1703938, 7, 0, 1703940, 536870918, 0, 1703948, 536870919, 0 )
+
+[node name="SkullTest" type="Light2D" parent="."]
+position = Vector2( -33.8908, 91.2545 )
+texture = ExtResource( 3 )
+mode = 3
+range_item_cull_mask = 2
+
+[node name="Particles2D" type="Particles2D" parent="SkullTest"]
+light_mask = 3
+position = Vector2( 5.1013, 5.47916 )
+amount = 256
+lifetime = 0.75
+preprocess = 10.0
+speed_scale = 0.5
+randomness = 0.99
+process_material = SubResource( 10 )
+
+[node name="Sprite" type="Sprite" parent="SkullTest"]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 16, 96, 16, 16 )
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 129, 152 )
+
+[node name="Goblin" parent="." instance=ExtResource( 5 )]
+position = Vector2( -8.99999, 82 )
+scale = Vector2( 1.5, 1.5 )
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]
+[connection signal="timeout" from="SoulTimer" to="." method="_on_SoulTimer_timeout"]
