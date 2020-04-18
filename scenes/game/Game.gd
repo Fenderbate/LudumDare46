@@ -17,6 +17,7 @@ func _ready():
 	SignalManager.connect("soul_consumed",self,"on_soul_consumed")
 	SignalManager.connect("soul_amount_changed",self,"on_soul_amount_changed")
 	SignalManager.connect("soulcharge_full",self,"on_soulcharge_full")
+	SignalManager.connect("soulcharge_reset",self,"on_soulcharge_reset")
 	
 	for x in range(-1,17):
 		for y in range(-1,17):
@@ -41,6 +42,10 @@ func on_soul_amount_changed():
 func on_soulcharge_full():
 	$Statue/Eye1.emitting = true
 	$Statue/Eye2.emitting = true
+
+func on_soulcharge_reset():
+	$Statue/Eye1.emitting = false
+	$Statue/Eye2.emitting = false
 
 func _on_SpawnTimer_timeout():
 	

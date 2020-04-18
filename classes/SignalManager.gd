@@ -8,5 +8,6 @@ signal soul_consumed
 signal soul_amount_changed
 
 signal soulcharge_full
+signal soulcharge_reset
 
 signal shake_camera

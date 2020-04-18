@@ -42,16 +42,20 @@ func set_soul(amount):
 	SignalManager.emit_signal("soul_amount_changed")
 	
 	if !in_soulcharge and amount > 0:
-		soul_charge += 1
+		soul_charge += 6
 		
 		if soul_charge >= needed_soulcharge:
+			soul_charge = needed_soulcharge
 			SignalManager.emit_signal("soulcharge_full")
 		
 
 func check_soulcharge():
-	if soul_charge == needed_soulcharge:
+	if soul_charge >= needed_soulcharge:
 		return true
 	return false
+
+func reset_soulcharge():
+	soul_charge = 0
 
 func hurt(fatal = false):
 	

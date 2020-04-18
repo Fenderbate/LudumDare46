@@ -70,7 +70,7 @@ func toggle_soulblade():
 	$Hand/SoulBlade.visible = !$Hand/SoulBlade.visible
 	$Hand/Weapon.visible = !$Hand/Weapon.visible
 	$Hand/SoulBlade/SoulBladeShape.disabled = !$Hand/SoulBlade/SoulBladeShape.disabled
-	if $SoulChargeTimer.time_left == 0:
+	if $SoulChargeTimer.time_left == 0 and Global.in_soulcharge:
 		$SoulChargeTimer.start()
 	
 
@@ -78,4 +78,5 @@ func toggle_soulblade():
 
 
 func _on_SoulChargeTimer_timeout():
+	Global.reset_soulcharge()
 	toggle_soulblade()
