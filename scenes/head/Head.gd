@@ -13,13 +13,21 @@ func _ready():
 
 func _physics_process(delta):
 	
+	
+	
 	if is_on_floor():
+		if $AnimationTree.active:
+			$AnimationTree.active = false
+			$AnimationPlayer.play("land")
 		if !jump_started:
 			motion.y = 20
 			motion.x = 0
 			$JumpTimer.start()
 			jump_started = true
 	elif !is_on_floor():
+		if !$AnimationTree.active:
+			$AnimationTree.active = true
+		$AnimationTree["parameters/blend_position"] = sin( clamp(motion.y / 20,-1,1) )
 		motion.x = dir * jump_speed
 		if  jump_started:
 			jump_started = false
@@ -34,4 +42,5 @@ func _on_JumpTimer_timeout():
 
 func die():
 	spawn_soul(3)
-	queue_free()
+	
+	.die()

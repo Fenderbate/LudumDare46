@@ -15,7 +15,7 @@ var dir = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	SignalManager.connect("game_over",self,"on_game_over")
 
 
 func _physics_process(delta):
@@ -48,3 +48,6 @@ func spawn_soul(soul_value = 1):
 func on_new_spawn_position_returned(requester, new_position):
 	if requester.get_ref() == self:
 		position = new_position
+
+func on_game_over(lose):
+	die()

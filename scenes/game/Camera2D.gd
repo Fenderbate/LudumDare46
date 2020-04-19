@@ -15,6 +15,8 @@ func _physics_process(delta):
 	if shakes > 0:
 		position = origin + Vector2(rand_range(-1,1),rand_range(-1,1))
 		shakes -= 1
+	else:
+		position = origin
 	
 
 func on_shake_camera():

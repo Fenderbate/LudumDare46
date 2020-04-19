@@ -18,5 +18,6 @@ func _physics_process(delta):
 	
 func die():
 	spawn_soul(2)
-	queue_free()
+	
+	.die()
 

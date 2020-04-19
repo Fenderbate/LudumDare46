@@ -44,8 +44,16 @@ func _physics_process(delta):
 	dir = int(Input.is_action_pressed("D")) - int(Input.is_action_pressed("A"))
 	
 	
+	if $AnimationPlayer.current_animation != "stand" and dir == 0:
+		$AnimationPlayer.play("stand")
+	elif $AnimationPlayer.current_animation != "move" and dir != 0:
+		$AnimationPlayer.play("move")
+	
 	motion.x = dir * speed
 	
+
+func die():
+	spawn_soul(0)
 
 func cyote_jump():
 	
@@ -55,6 +63,7 @@ func cyote_jump():
 
 func jump():
 	motion.y = -200
+	$Jump.play()
 
 func check_bounds():
 	if position.x < -10:
@@ -74,7 +83,11 @@ func toggle_soulblade():
 		$SoulChargeTimer.start()
 	
 
-
+func on_game_over(lose):
+	if lose:
+		queue_free()
+	else:
+		print("win")
 
 
 func _on_SoulChargeTimer_timeout():

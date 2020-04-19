@@ -11,3 +11,7 @@ signal soulcharge_full
 signal soulcharge_reset
 
 signal shake_camera
+
+signal game_over(lose)
+
+signal tutorial_over

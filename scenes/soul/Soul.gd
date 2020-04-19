@@ -13,6 +13,12 @@ var turn_delta = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	if Global.game_over:
+		$Trail.visible = false
+		emitting=false
+	else:
+		show()
+	
 	randomize()
 	
 	motion.x = 20 * rand_range(-0.8,0.8)
@@ -23,9 +29,13 @@ func _ready():
 	
 
 func _physics_process(delta):
+	if Global.game_over:
+		emitting = false
+		$Trail.emitting = false
+		return
 	
 	motion = motion.move_toward(target_motion,1)
-	
+		
 	position += motion * delta
 	
 	

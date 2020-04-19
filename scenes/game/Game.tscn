@@ -1,15 +1,15 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://misc/tilesets/EnvironmentTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://sprites/tileset.png" type="Texture" id=2]
 [ext_resource path="res://sprites/skull_mask.png" type="Texture" id=3]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/goblin/Goblin.tscn" type="PackedScene" id=5]
+[ext_resource path="res://sprites/statue_eye_progress.png" type="Texture" id=5]
 [ext_resource path="res://scenes/game/Game.gd" type="Script" id=6]
-[ext_resource path="res://sprites/staue_eye_progress.png" type="Texture" id=7]
-[ext_resource path="res://sprites/healthbar_back.png" type="Texture" id=8]
-[ext_resource path="res://sprites/healthbar_front.png" type="Texture" id=9]
+[ext_resource path="res://sprites/soulfire_progress.png" type="Texture" id=7]
+[ext_resource path="res://sprites/soulfire_back.png" type="Texture" id=8]
 [ext_resource path="res://scenes/game/Camera2D.gd" type="Script" id=10]
+[ext_resource path="res://misc/fonts/Font_x16.tres" type="DynamicFont" id=11]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.445313, 1 )
@@ -29,6 +29,54 @@ initial_velocity = 15.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 color_ramp = SubResource( 2 )
+
+[sub_resource type="Animation" id=12]
+resource_name = "text_hide"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "text_hide_permanent"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "text_show"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [sub_resource type="Curve" id=4]
 _data = [ Vector2( 0, 1 ), 0.0, -0.108562, 0, 0, Vector2( 1, 0 ), -1.75862, 0.0, 0, 0 ]
@@ -77,15 +125,18 @@ color_ramp = SubResource( 10 )
 
 [node name="Game" type="Node"]
 script = ExtResource( 6 )
+label = NodePath("UILayer/UI/Label")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
-autostart = true
+one_shot = true
 
 [node name="SoulTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
-autostart = true
+
+[node name="LabelTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 128, 128 )
@@ -93,21 +144,20 @@ current = true
 script = ExtResource( 10 )
 
 [node name="Statue" type="Sprite" parent="."]
-position = Vector2( 128, 45 )
+position = Vector2( 128, 120 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 64, 96, 32, 32 )
 
 [node name="EyeProgress" type="TextureProgress" parent="Statue"]
-margin_left = -6.0
-margin_top = -5.0
-margin_right = 6.0
+margin_left = -8.5
+margin_top = -8.0
+margin_right = 9.5
 margin_bottom = -2.0
 max_value = 33.0
-allow_greater = true
 allow_lesser = true
-texture_progress = ExtResource( 7 )
+texture_progress = ExtResource( 5 )
 fill_mode = 3
 __meta__ = {
 "_edit_use_anchors_": false
@@ -135,19 +185,44 @@ __meta__ = {
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
-margin_left = 10.0
-margin_top = 3.0
-margin_right = 246.0
-margin_bottom = 15.0
+margin_left = 104.0
+margin_top = 194.0
+margin_right = 152.0
+margin_bottom = 258.0
+rect_pivot_offset = Vector2( 24, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SoulBar" type="TextureProgress" parent="UILayer/UI/MarginContainer"]
-margin_right = 236.0
-margin_bottom = 12.0
+margin_right = 48.0
+margin_bottom = 64.0
 texture_under = ExtResource( 8 )
-texture_progress = ExtResource( 9 )
+texture_progress = ExtResource( 7 )
+fill_mode = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UILayer/UI"]
+margin_left = 8.0
+margin_top = 15.0
+margin_right = 248.0
+margin_bottom = 87.0
+rect_min_size = Vector2( 240, 72 )
+custom_fonts/font = ExtResource( 11 )
+custom_colors/font_color = Color( 0.388235, 0.607843, 1, 1 )
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UILayer/UI/Label"]
+anims/text_hide = SubResource( 12 )
+anims/text_hide_permanent = SubResource( 14 )
+anims/text_show = SubResource( 13 )
 
 [node name="LeftSpawn" type="Position2D" parent="."]
 position = Vector2( -8, 84 )
@@ -175,7 +250,7 @@ cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="Gradient" type="Polygon2D" parent="."]
-position = Vector2( -64, 288 )
+position = Vector2( -72, 288 )
 rotation = -1.5708
 scale = Vector2( 1.5, 1.5 )
 z_index = 10
@@ -218,9 +293,7 @@ region_rect = Rect2( 16, 96, 16, 16 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 129, 152 )
-
-[node name="Goblin" parent="." instance=ExtResource( 5 )]
-position = Vector2( -8.99999, 82 )
-scale = Vector2( 1.5, 1.5 )
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]
 [connection signal="timeout" from="SoulTimer" to="." method="_on_SoulTimer_timeout"]
+[connection signal="timeout" from="LabelTimer" to="." method="_on_LabelTimer_timeout"]
+[connection signal="animation_finished" from="UILayer/UI/Label/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

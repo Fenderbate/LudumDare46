@@ -17,10 +17,10 @@ func _ready():
 
 
 func _on_SoulBlade_area_entered(area):
-	area.hurt(2)
+	area.hurt(3)
 	SignalManager.emit_signal("shake_camera")
 
 
 func _on_SoulBlade_body_entered(body):
-	body.hurt(2)
+	body.hurt(3)
 	SignalManager.emit_signal("shake_camera")
