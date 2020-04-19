@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://misc/tilesets/EnvironmentTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://sprites/tileset.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/game/Game.gd" type="Script" id=6]
 [ext_resource path="res://sprites/soulfire_progress.png" type="Texture" id=7]
 [ext_resource path="res://sprites/soulfire_back.png" type="Texture" id=8]
+[ext_resource path="res://music/music.wav" type="AudioStream" id=9]
 [ext_resource path="res://scenes/game/Camera2D.gd" type="Script" id=10]
 [ext_resource path="res://misc/fonts/Font_x16.tres" type="DynamicFont" id=11]
 
@@ -126,6 +127,11 @@ color_ramp = SubResource( 10 )
 [node name="Game" type="Node"]
 script = ExtResource( 6 )
 label = NodePath("UILayer/UI/Label")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -10.0
+autoplay = true
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -250,7 +256,7 @@ cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="Gradient" type="Polygon2D" parent="."]
-position = Vector2( -72, 288 )
+position = Vector2( -63, 290 )
 rotation = -1.5708
 scale = Vector2( 1.5, 1.5 )
 z_index = 10
@@ -271,6 +277,7 @@ format = 1
 tile_data = PoolIntArray( 655362, 7, 0, 655372, 7, 0, 655375, 536870918, 0, 851969, 1610612742, 0, 851971, 4, 0, 851981, 1610612743, 0, 851983, 536870917, 0, 1179655, 536870919, 0, 1179658, 536870918, 0, 1376262, 1610612742, 0, 1376264, 4, 0, 1376265, 5, 0, 1703938, 7, 0, 1703940, 536870918, 0, 1703948, 536870919, 0 )
 
 [node name="SkullTest" type="Light2D" parent="."]
+visible = false
 position = Vector2( -33.8908, 91.2545 )
 texture = ExtResource( 3 )
 mode = 3
